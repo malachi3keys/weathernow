@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Check the Weather</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'climate/styles.css' %}">
+    </head>
+    <body>
+        <h1>Check the Weather</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="space">
+                <label for="city">Location: </label>
+                <input type="text" placeholder="Enter City" name="q" id="city">    
+            </div>
+       
+            <div class="space">
+                <label for="imperial">Farenheit</label>
+                <input type="radio" name="units" value="imperial" id="imperial">
+
+                <label for="metric">Celcius</label>
+                <input type="radio" name="units" value="metric" id="metric">    
+            </div>
+            
+            <div class="space">
+                <button class="btn btn-dark" type="submit">Check Weather</button>    
+            </div>
+            
+        </form>
+
+        <!-- <form method="post" class="col-md-6 col-md-offset-3">
+            {% csrf_token %}
+            <div class="input-group">
+              <input type="text" class="form-control" name="city" placeholder="Search">
+              
+              <form>-->
+        <div> 
+            {{temp}}
+        </div>
+        <!-- <h3>{{description}}</h3>
+        <h3>{{temp}}</h3> -->
+        <img src="http://openweathermap.org/img/w/{{icon}}.png" alt="{{icon}}">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    </body>
+</html>

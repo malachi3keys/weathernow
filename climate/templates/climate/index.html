@@ -5,40 +5,58 @@
         <title>Check the Weather</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
         <link rel="stylesheet" href="{% static 'climate/styles.css' %}">
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'climate/favicon/apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'climate/favicon/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'climate/favicon/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'climate/favicon/site.webmanifest' %}">
     </head>
     <body>
-        <h1>Enter Your City</h1>
+        <h1>Today's Weather</h1>
         <form method="post">
             {% csrf_token %}
-            <div class="space">
-                <label for="city">Location: </label>
-                <input type="text" placeholder="Enter City" name="q" id="city">    
+            <div id="city-container">
+                <div id="textstuff" class="search">
+                    <input type="text" placeholder="Enter City" name="q" id="city" required>    
+                </div>
+                <div class="search">
+                    <button class="btn btn-dark" type="submit">Search</button>    
+                </div>  
             </div>
-       
-            <div class="space">
-                <label for="imperial">Farenheit</label>
-                <input type="radio" name="units" value="imperial" id="imperial">
-
-                <label for="metric">Celcius</label>
-                <input type="radio" name="units" value="metric" id="metric">    
-            </div>
-            
-            <div class="space">
-                <button class="btn btn-dark" type="submit">Check Weather</button>    
+            <div id="select-units">
+                <div class="radio-boxes">
+                    <label for="imperial">Farenheit</label>
+                    <input type="radio" name="units" value="imperial" id="imperial" checked>
+                </div>                    
+                <div class="radio-boxes">
+                    <label for="metric">Celcius</label>
+                    <input type="radio" name="units" value="metric" id="metric">    
+                </div>
             </div>
         </form>
-        
-        <div class="infocard">
-            <div>{{city}}, {{country_code}}</div>
-            <div>{{temp}}&deg;</div>
-            <div>
-                <img src="http://openweathermap.org/img/w/{{icon}}.png" alt="{{icon}}">
+
+        {% if not error %}
+            <div class="infoholder">
+                <div class="infocard">
+                    <div>
+                        <h2>{{city}}, {{country_code}}</h2>
+                        <p class="temp">{{temp}}&deg;{{units}}</p>    
+                    </div>
+                    <div><img src="http://openweathermap.org/img/wn/{{icon}}@2x.png" alt="{{description}}"></div>
+                    <div><p>{{description}}</p></div>
+                    <div>
+                        <p class="hilow">H: {{max}}&deg;{{units}}</p>
+                        <p class="hilow">L: {{min}}&deg;{{units}}</p>    
+                    </div>
+                </div>    
             </div>
-            <div>{{description}}</div>
-        </div>
-        
+        {% elif error %}
+            <div class="infocard"><p>Error: Please enter a valid city</p></div>
+        {% endif %}
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     </body>
 </html>
